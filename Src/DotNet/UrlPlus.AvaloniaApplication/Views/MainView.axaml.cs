@@ -1,34 +1,64 @@
 ﻿using Avalonia.Controls;
+using Avalonia.Markup.Xaml;
 using Avalonia.Media;
+using Avalonia.ReactiveUI;
+using Avalonia.VisualTree;
+using Microsoft.Extensions.DependencyInjection;
+using ReactiveUI;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
 using UrlPlus.AvaloniaApplication.ViewModels;
 
 namespace UrlPlus.AvaloniaApplication.Views;
 
-public partial class MainView : UserControl
+public partial class MainView : ReactiveUserControl<MainWindowViewModel>
 {
-    private MainViewModel viewModel;
+    private readonly IServiceProvider svcProv;
+
+    private IAppGlobalsData appGlobals;
+    private MainWindowViewModel viewModel;
+    private Button buttonControlSyncItems;
+    private volatile int childControlsInitialized;
 
     public MainView()
     {
-        InitializeComponent();
+        svcProv = ServiceProviderContainer.Instance.Value.SvcProv;
 
         this.Loaded += MainView_Loaded;
+        this.WhenActivated(disposables => { });
+
+        AvaloniaXamlLoader.Load(this);
     }
 
-    #region UI Event Handlers
-
-    private void MainView_Loaded(object? sender, global::Avalonia.Interactivity.RoutedEventArgs e)
+    private void MainView_Loaded(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
-        if (viewModel == null)
+        foreach (var control in this.GetVisualChildren(
+            ).Single().GetVisualDescendants().OfType<Button>())
         {
-            viewModel = DataContext as MainViewModel;
-            viewModel.TopLevel = TopLevel.GetTopLevel(this);
+            if (control.Name == nameof(buttonSyncItems))
+            {
+                buttonControlSyncItems = control;
+                break;
+            }
+        }
 
-            viewModel.DefaultOutputTextForeground = new SolidColorBrush(Color.FromArgb(255, 0, 0, 255));
-            viewModel.SuccessOutputTextForeground = new SolidColorBrush(Color.FromArgb(255, 0, 255, 0));
-            viewModel.ErrorOutputTextForeground = new SolidColorBrush(Color.FromArgb(255, 255, 0, 0));
+        if (buttonControlSyncItems != null && Interlocked.CompareExchange(ref childControlsInitialized, 1, 0) == 0)
+        {
+            viewModel = this.ViewModel;
+
+            appGlobals = svcProv.GetRequiredService<AppGlobals>().RegisterData(
+                new AppGlobalsMutableData
+                {
+                    TopLevel = TopLevel.GetTopLevel(this),
+                    DefaultOutputTextForeground = new SolidColorBrush(Color.FromArgb(255, 0, 0, 255)),
+                    SuccessOutputTextForeground = new SolidColorBrush(Color.FromArgb(255, 0, 255, 0)),
+                    ErrorOutputTextForeground = new SolidColorBrush(Color.FromArgb(255, 255, 0, 0)),
+                    DefaultMaterialIconsForeground = buttonControlSyncItems.Foreground
+                });
+            
+            viewModel.Initialize();
         }
     }
-
-    #endregion UI Event Handlers
 }

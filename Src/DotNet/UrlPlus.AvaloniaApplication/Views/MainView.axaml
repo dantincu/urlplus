@@ -1,4 +1,6 @@
 <UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:rxui="clr-namespace:Avalonia.ReactiveUI;assembly=Avalonia.ReactiveUI"
+             xmlns:app="clr-namespace:UrlPlus.AvaloniaApplication"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -6,29 +8,32 @@
              xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="UrlPlus.AvaloniaApplication.Views.MainView"
-             x:DataType="vm:MainViewModel">
+             x:DataType="vm:MainWindowViewModel">
   <Design.DataContext>
     <!-- This only sets the DataContext for the previewer in an IDE,
          to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
-    <vm:MainViewModel />
+    <vm:MainWindowViewModel />
   </Design.DataContext>
-
-  <Grid ColumnDefinitions="100, 45, *" RowDefinitions="35, 35, 35, 35, auto, *">
-    <Button Command="{Binding Fetch}" Content="Fetch" Grid.Row="0" Grid.Column="0" Margin="0 0 0 0"></Button>
-    <Button Command="{Binding RawUrlFromClipboard}" Content="{materialIcons:MaterialIconExt Kind=ContentPaste}" Grid.Row="0" Grid.Column="1"></Button>
-    
-    <TextBlock Text="Raw Url" Margin="5 10 0 10" Grid.Row="1" Grid.Column="0" />
-    <Button Command="{Binding RawUrlToClipboard}" Content="{materialIcons:MaterialIconExt Kind=ContentPaste}" Grid.Row="1" Grid.Column="1" Margin="0 0 0 0"></Button>
-    <TextBox Text="{Binding RawUrl}" x:Name="textBoxRawUrl" Grid.Row="1" Grid.Column="2" Margin="0 3 0 3" />
-    
-    <TextBlock Text="Title" Margin="5 10 0 10" Grid.Row="2" Grid.Column="0" />
-    <Button Command="{Binding ResourceTitleToClipboard}" Content="{materialIcons:MaterialIconExt Kind=ContentPaste}" Grid.Row="2" Grid.Column="1" Margin="0 0 0 0"></Button>
-    <TextBox Text="{Binding ResourceTitle}" x:Name="textBoxResourceTitle" Grid.Row="2" Grid.Column="2" Margin="0 3 0 3" />
-    
-    <TextBlock Text="Title and Url" Margin="5 10 0 10" Grid.Row="3" Grid.Column="0" />
-    <Button Command="{Binding TitleAndUrlToClipboard}" Content="{materialIcons:MaterialIconExt Kind=ContentPaste}" Grid.Row="3" Grid.Column="1" Margin="0 0 0 0"></Button>
-    <TextBox Text="{Binding TitleAndUrl}" x:Name="textBoxTitleAndUrl" Grid.Row="3" Grid.Column="2" Margin="0 3 0 3" />
-
-    <TextBox Text="{Binding OutputText}" Foreground="{Binding OutputTextForeground}" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3" IsReadOnly="True" x:Name="textBoxOutput" Margin="10 10 10 10" Height="100" />
+  <Grid HorizontalAlignment="Stretch">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="35"></RowDefinition>
+      <RowDefinition Height="*"></RowDefinition>
+    </Grid.RowDefinitions>
+    <Button Content="{materialIcons:MaterialIconExt Kind=Plus}" Command="{Binding NewItem}" Foreground="{Binding ButtonNewUrlItemForeground}" Grid.Row="0" Margin="3 0 0 0"></Button>
+    <Button Content="{materialIcons:MaterialIconExt Kind=ContentSave}" Foreground="{Binding ButtonSaveUrlItemForeground}" Grid.Row="0" Margin="40 0 0 0"></Button>
+    <Button Content="{materialIcons:MaterialIconExt Kind=History}" Foreground="{Binding ButtonUrlItemsHistoryForeground}" Grid.Row="0" Margin="77 0 0 0"></Button>
+    <Button Content="{materialIcons:MaterialIconExt Kind=Sync}" x:Name="buttonSyncItems" Grid.Row="0" Margin="0 0 40 0" HorizontalAlignment="Right"></Button>
+    <Button Content="{materialIcons:MaterialIconExt Kind=Settings}" Foreground="{Binding ButtonSettingsForeground}" Grid.Row="0" Margin="0 0 3 0" HorizontalAlignment="Right"></Button>
+    <rxui:RoutedViewHost Grid.Row="1" Router="{Binding Router}">
+      <rxui:RoutedViewHost.DefaultContent>
+        <TextBlock Text="Default content"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center" />
+      </rxui:RoutedViewHost.DefaultContent>
+      <rxui:RoutedViewHost.ViewLocator>
+        <!-- See AppViewLocator.cs section below -->
+        <app:AppViewLocator />
+      </rxui:RoutedViewHost.ViewLocator>
+    </rxui:RoutedViewHost>
   </Grid>
 </UserControl>

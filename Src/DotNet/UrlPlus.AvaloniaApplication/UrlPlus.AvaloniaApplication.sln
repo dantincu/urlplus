@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UrlPlus.AvaloniaApplication
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UrlPlus.AvaloniaApplication.iOS", "..\UrlPlus.AvaloniaApplication.iOS\UrlPlus.AvaloniaApplication.iOS.csproj", "{4F9E73EF-87A2-48BB-9137-2817AA573646}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BoilerplateCode", "..\BoilerplateCode\BoilerplateCode.csproj", "{EF00A472-A940-4F0E-B7EC-550A020873C1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -37,6 +39,10 @@ Global
 		{4F9E73EF-87A2-48BB-9137-2817AA573646}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4F9E73EF-87A2-48BB-9137-2817AA573646}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4F9E73EF-87A2-48BB-9137-2817AA573646}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{EF00A472-A940-4F0E-B7EC-550A020873C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF00A472-A940-4F0E-B7EC-550A020873C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF00A472-A940-4F0E-B7EC-550A020873C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EF00A472-A940-4F0E-B7EC-550A020873C1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

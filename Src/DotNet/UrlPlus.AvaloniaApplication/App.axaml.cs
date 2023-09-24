@@ -1,7 +1,7 @@
 ﻿using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
-
+using Microsoft.Extensions.DependencyInjection;
 using UrlPlus.AvaloniaApplication.ViewModels;
 using UrlPlus.AvaloniaApplication.Views;
 
@@ -11,6 +11,8 @@ public partial class App : Application
 {
     public override void Initialize()
     {
+        Dependencies.RegisterAll(new ServiceCollection());
+        
         AvaloniaXamlLoader.Load(this);
     }
 
@@ -20,14 +22,14 @@ public partial class App : Application
         {
             desktop.MainWindow = new MainWindow
             {
-                DataContext = new MainViewModel()
+                DataContext = new MainWindowViewModel()
             };
         }
         else if (ApplicationLifetime is ISingleViewApplicationLifetime singleViewPlatform)
         {
             singleViewPlatform.MainView = new MainView
             {
-                DataContext = new MainViewModel()
+                DataContext = new MainWindowViewModel()
             };
         }
 
