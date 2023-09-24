@@ -24,7 +24,7 @@ namespace UrlPlus.AvaloniaApplication.ViewModels
 
         public MainWindowViewModel()
         {
-            svcProv = ServiceProviderContainer.Instance.Value.SvcProv;
+            svcProv = ServiceProviderContainer.Instance.Value.Data;
             // Manage the routing state. Use the Router.Navigate.Execute
             // command to navigate to different view models. 
             //

@@ -13,7 +13,7 @@ public class ViewModelBase : ReactiveObject
 
     public ViewModelBase()
     {
-        SvcProv = ServiceProviderContainer.Instance.Value.SvcProv;
+        SvcProv = ServiceProviderContainer.Instance.Value.Data;
         AppGlobals = SvcProv.GetRequiredService<AppGlobals>().Data;
         TopLevel = AppGlobals.TopLevel;
     }

@@ -24,7 +24,7 @@ public partial class MainView : ReactiveUserControl<MainWindowViewModel>
 
     public MainView()
     {
-        svcProv = ServiceProviderContainer.Instance.Value.SvcProv;
+        svcProv = ServiceProviderContainer.Instance.Value.Data;
 
         this.Loaded += MainView_Loaded;
         this.WhenActivated(disposables => { });

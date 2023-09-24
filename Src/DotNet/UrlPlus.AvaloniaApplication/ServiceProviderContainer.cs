@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace UrlPlus.AvaloniaApplication
 {
-    public class ServiceProviderContainer : SingletonRegistrarBase<IServiceProvider, IServiceCollection>
+    public class ServiceProviderContainer : ServiceProviderContainerBase
     {
         private ServiceProviderContainer()
         {
@@ -15,14 +15,9 @@ namespace UrlPlus.AvaloniaApplication
 
         public static Lazy<ServiceProviderContainer> Instance { get; } = new Lazy<ServiceProviderContainer>(() => new());
 
-        public IServiceProvider SvcProv => Data;
-
-        public IServiceCollection RegisterAll(IServiceCollection services)
+        protected override void RegisterServices(IServiceCollection services)
         {
-            return services;
+            services.AddSingleton<AppGlobals>();
         }
-
-        protected override IServiceProvider Convert(
-            IServiceCollection services) => services.BuildServiceProvider();
     }
 }

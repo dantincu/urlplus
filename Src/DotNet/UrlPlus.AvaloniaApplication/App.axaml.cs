@@ -11,7 +11,7 @@ public partial class App : Application
 {
     public override void Initialize()
     {
-        Dependencies.RegisterAll(new ServiceCollection());
+        ServiceProviderContainer.Instance.Value.RegisterData(new ServiceCollection());
         
         AvaloniaXamlLoader.Load(this);
     }
