@@ -13,6 +13,8 @@ namespace UrlPlus.AvaloniaApplication.ViewModels
 {
     public class UrlItemViewModel : ViewModelBase, IRoutableViewModel
     {
+        // private UserMsgObservable userMsgObservable;
+
         private string rawUrl;
         private string resourceTitle;
         private string titleAndUrl;
@@ -23,11 +25,14 @@ namespace UrlPlus.AvaloniaApplication.ViewModels
         {
             HostScreen = hostScreen;
             TitleAndUrlTemplate = "[{0}]({1})";
-            Fetch = GetFetchCommand();
-            RawUrlToClipboard = GetRawUrlToClipboardCommand();
-            ResourceTitleToClipboard = GetResourceTitleToClipboardCommand();
-            TitleAndUrlToClipboard = GetTitleAndUrlToClipboardCommand();
-            RawUrlFromClipboard = GetRawUrlFromClipboardCommand();
+            // userMsgObservable = new UserMsgObservable();
+
+            Fetch = CreateFetchCommand();
+            RawUrlToClipboard = CreateRawUrlToClipboardCommand();
+            ResourceTitleToClipboard = CreateResourceTitleToClipboardCommand();
+            TitleAndUrlToClipboard = CreateTitleAndUrlToClipboardCommand();
+            RawUrlFromClipboard = CreateRawUrlFromClipboardCommand();
+            ShowUserMsg = CreateShowUserMsgCommand();
 
             DefaultOutputTextForeground = AppGlobals.DefaultOutputTextForeground;
             SuccessOutputTextForeground = AppGlobals.SuccessOutputTextForeground;
@@ -95,12 +100,14 @@ namespace UrlPlus.AvaloniaApplication.ViewModels
         public ReactiveCommand<Unit, Unit> TitleAndUrlToClipboard { get; }
         public ReactiveCommand<Unit, Unit> RawUrlFromClipboard { get; }
 
+        public ReactiveCommand<UserMsgTuple, Unit> ShowUserMsg { get; }
+
         private IBrush DefaultOutputTextForeground { get; set; }
         private IBrush SuccessOutputTextForeground { get; set; }
         private IBrush ErrorOutputTextForeground { get; set; }
         private IBrush DefaultMaterialIconsForeground { get; set; }
 
-        private ReactiveCommand<Unit, Unit> GetFetchCommand() => ReactiveCommand.Create(
+        private ReactiveCommand<Unit, Unit> CreateFetchCommand() => ReactiveCommand.Create(
             () =>
             {
                 FetchResourceAsync(
@@ -110,16 +117,16 @@ namespace UrlPlus.AvaloniaApplication.ViewModels
                     false);
             });
 
-        private ReactiveCommand<Unit, Unit> GetRawUrlToClipboardCommand() => ReactiveCommand.Create(
+        private ReactiveCommand<Unit, Unit> CreateRawUrlToClipboardCommand() => ReactiveCommand.Create(
             () => { RawUrlToClipboardAsync(); });
 
-        private ReactiveCommand<Unit, Unit> GetResourceTitleToClipboardCommand() => ReactiveCommand.Create(
+        private ReactiveCommand<Unit, Unit> CreateResourceTitleToClipboardCommand() => ReactiveCommand.Create(
             () => { ResourceTitleToClipboardAsync(); });
 
-        private ReactiveCommand<Unit, Unit> GetTitleAndUrlToClipboardCommand() => ReactiveCommand.Create(
+        private ReactiveCommand<Unit, Unit> CreateTitleAndUrlToClipboardCommand() => ReactiveCommand.Create(
             () => { TitleAndUrlToClipboardAsync(); });
 
-        private ReactiveCommand<Unit, Unit> GetRawUrlFromClipboardCommand() => ReactiveCommand.Create(
+        private ReactiveCommand<Unit, Unit> CreateRawUrlFromClipboardCommand() => ReactiveCommand.Create(
             () =>
             {
                 FetchResourceAsync(
@@ -129,13 +136,21 @@ namespace UrlPlus.AvaloniaApplication.ViewModels
                     true);
             });
 
-        private void ShowUserMsg(string text, bool? isSuccess)
-        {
-            OutputText = text;
+        private ReactiveCommand<UserMsgTuple, Unit> CreateShowUserMsgCommand(
+            ) => ReactiveCommand.Create<UserMsgTuple>(
+                msgTuple =>
+                {
+                    ShowUserMessage(msgTuple);
+                }/* ,
+                userMsgObservable*/);
 
-            if (isSuccess.HasValue)
+        private void ShowUserMessage(UserMsgTuple msgTuple)
+        {
+            OutputText = msgTuple.Message;
+
+            if (msgTuple.IsSuccess.HasValue)
             {
-                if (isSuccess.Value)
+                if (msgTuple.IsSuccess.Value)
                 {
                     OutputTextForeground = SuccessOutputTextForeground;
                 }
@@ -150,6 +165,18 @@ namespace UrlPlus.AvaloniaApplication.ViewModels
             }
         }
 
+        private void ShowUserMessage(
+            string text,
+            bool? isSuccess)
+        {
+            // userMsgObservable.Execute(true);
+
+            ShowUserMsg.Execute(
+                new UserMsgTuple(
+                    text,
+                    isSuccess)).Subscribe();
+        }
+
         private Task RawUrlToClipboardAsync() => CopyToClipboardAsync("provided url", RawUrl);
         private Task ResourceTitleToClipboardAsync() => CopyToClipboardAsync("title", ResourceTitle);
         private Task TitleAndUrlToClipboardAsync() => CopyToClipboardAsync("title and url", TitleAndUrl);
@@ -160,13 +187,13 @@ namespace UrlPlus.AvaloniaApplication.ViewModels
         {
             try
             {
-                ShowUserMsg($"Copying the {objectName} to clipboard...", null);
+                ShowUserMessage($"Copying the {objectName} to clipboard...", null);
                 await TopLevel.Clipboard.SetTextAsync(objectText);
-                ShowUserMsg($"Copied the {objectName} to clipboard", true);
+                ShowUserMessage($"Copied the {objectName} to clipboard", true);
             }
             catch (Exception exc)
             {
-                ShowUserMsg($"Could not copy the {objectName} to clipboard: {exc.Message}", false);
+                ShowUserMessage($"Could not copy the {objectName} to clipboard: {exc.Message}", false);
             }
         }
 
@@ -179,19 +206,20 @@ namespace UrlPlus.AvaloniaApplication.ViewModels
 
             try
             {
-                ShowUserMsg(initMsg, null);
+                ShowUserMessage(initMsg, null);
                 rawUrl = await rawUrlRetriever();
 
                 if (string.IsNullOrWhiteSpace(rawUrl))
                 {
-                    ShowUserMsg("The provided url is empty", false);
+                    ShowUserMessage("The provided url is empty", false);
                 }
             }
             catch (Exception exc)
             {
-                ShowUserMsg(retrieveUrlErrMsgFactory(exc), false);
+                ShowUserMessage(retrieveUrlErrMsgFactory(exc), false);
             }
 
+            // await Task.Delay(1000);
             return rawUrl;
         }
 
@@ -203,12 +231,12 @@ namespace UrlPlus.AvaloniaApplication.ViewModels
             {
                 try
                 {
-                    ShowUserMsg("Validating the provided url...", null);
+                    ShowUserMessage("Validating the provided url...", null);
                     uri = new Uri(rawUrl);
                 }
                 catch (Exception exc)
                 {
-                    ShowUserMsg($"The provided url is invalid: {exc.Message}", false);
+                    ShowUserMessage($"The provided url is invalid: {exc.Message}", false);
                 }
             }
 
@@ -223,7 +251,7 @@ namespace UrlPlus.AvaloniaApplication.ViewModels
             {
                 try
                 {
-                    ShowUserMsg("Retrieving the resource from url...", null);
+                    ShowUserMessage("Retrieving the resource from url...", null);
 
                     var web = new HtmlWeb();
                     var doc = web.Load(uri);
@@ -232,7 +260,7 @@ namespace UrlPlus.AvaloniaApplication.ViewModels
                 }
                 catch (Exception exc)
                 {
-                    ShowUserMsg($"Could not retrieve the resource from url: {exc.Message}", false);
+                    ShowUserMessage($"Could not retrieve the resource from url: {exc.Message}", false);
                 }
             }
 
@@ -337,7 +365,7 @@ namespace UrlPlus.AvaloniaApplication.ViewModels
                 }
                 else
                 {
-                    ShowUserMsg("Retrieved the resource from url", true);
+                    ShowUserMessage("Retrieved the resource from url", true);
                 }
             }
         }
