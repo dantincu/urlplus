@@ -28,13 +28,16 @@ namespace UrlPlus.AvaloniaApplication.ViewModels
             ResourceTitleToClipboard = GetResourceTitleToClipboardCommand();
             TitleAndUrlToClipboard = GetTitleAndUrlToClipboardCommand();
             RawUrlFromClipboard = GetRawUrlFromClipboardCommand();
+
+            DefaultOutputTextForeground = AppGlobals.DefaultOutputTextForeground;
+            SuccessOutputTextForeground = AppGlobals.SuccessOutputTextForeground;
+            ErrorOutputTextForeground = AppGlobals.ErrorOutputTextForeground;
+            DefaultMaterialIconsForeground = AppGlobals.DefaultMaterialIconsForeground;
         }
 
         public string? UrlPathSegment { get; } = Guid.NewGuid().ToString().Substring(0, 5);
 
         public IScreen HostScreen { get; }
-
-        public TopLevel TopLevel { get; set; }
 
         public string RawUrl
         {
@@ -86,15 +89,16 @@ namespace UrlPlus.AvaloniaApplication.ViewModels
             }
         }
 
-        public IBrush DefaultOutputTextForeground { get; set; }
-        public IBrush SuccessOutputTextForeground { get; set; }
-        public IBrush ErrorOutputTextForeground { get; set; }
-
         public ReactiveCommand<Unit, Unit> Fetch { get; }
         public ReactiveCommand<Unit, Unit> RawUrlToClipboard { get; }
         public ReactiveCommand<Unit, Unit> ResourceTitleToClipboard { get; }
         public ReactiveCommand<Unit, Unit> TitleAndUrlToClipboard { get; }
         public ReactiveCommand<Unit, Unit> RawUrlFromClipboard { get; }
+
+        private IBrush DefaultOutputTextForeground { get; set; }
+        private IBrush SuccessOutputTextForeground { get; set; }
+        private IBrush ErrorOutputTextForeground { get; set; }
+        private IBrush DefaultMaterialIconsForeground { get; set; }
 
         private ReactiveCommand<Unit, Unit> GetFetchCommand() => ReactiveCommand.Create(
             () =>
