@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace UrlPlus.AvaloniaApplication.ViewModels
 {
-    public class UrlItemViewModelV2 : ViewModelBase, IRoutableViewModel
+    public class UrlItemViewModelInitial : ViewModelBase, IRoutableViewModel
     {
         private string rawUrl;
         private string resourceTitle;
@@ -19,7 +19,7 @@ namespace UrlPlus.AvaloniaApplication.ViewModels
         private string outputText;
         private IBrush outputTextForeground;
 
-        public UrlItemViewModelV2(IScreen hostScreen)
+        public UrlItemViewModelInitial(IScreen hostScreen)
         {
             HostScreen = hostScreen;
             TitleAndUrlTemplate = "[{0}]({1})";
