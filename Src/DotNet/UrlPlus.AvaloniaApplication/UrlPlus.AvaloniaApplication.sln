@@ -11,7 +11,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UrlPlus.AvaloniaApplication
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UrlPlus.AvaloniaApplication.iOS", "..\UrlPlus.AvaloniaApplication.iOS\UrlPlus.AvaloniaApplication.iOS.csproj", "{4F9E73EF-87A2-48BB-9137-2817AA573646}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BoilerplateCode", "..\BoilerplateCode\BoilerplateCode.csproj", "{EF00A472-A940-4F0E-B7EC-550A020873C1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Turmerik", "..\Turmerik\Turmerik.csproj", "{8D5BD5C6-955B-4BAF-8291-8C4173195519}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Turmerik.Testing", "..\Turmerik.Testing\Turmerik.Testing.csproj", "{A566615E-674D-4118-8F4A-19B0CD03E6E4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Turmerik.UnitTests", "..\Turmerik.UnitTests\Turmerik.UnitTests.csproj", "{960CABC6-A585-426F-BB65-6CC96842DAB5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,10 +43,18 @@ Global
 		{4F9E73EF-87A2-48BB-9137-2817AA573646}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4F9E73EF-87A2-48BB-9137-2817AA573646}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4F9E73EF-87A2-48BB-9137-2817AA573646}.Release|Any CPU.Deploy.0 = Release|Any CPU
-		{EF00A472-A940-4F0E-B7EC-550A020873C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EF00A472-A940-4F0E-B7EC-550A020873C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EF00A472-A940-4F0E-B7EC-550A020873C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EF00A472-A940-4F0E-B7EC-550A020873C1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8D5BD5C6-955B-4BAF-8291-8C4173195519}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8D5BD5C6-955B-4BAF-8291-8C4173195519}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8D5BD5C6-955B-4BAF-8291-8C4173195519}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8D5BD5C6-955B-4BAF-8291-8C4173195519}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A566615E-674D-4118-8F4A-19B0CD03E6E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A566615E-674D-4118-8F4A-19B0CD03E6E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A566615E-674D-4118-8F4A-19B0CD03E6E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A566615E-674D-4118-8F4A-19B0CD03E6E4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{960CABC6-A585-426F-BB65-6CC96842DAB5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{960CABC6-A585-426F-BB65-6CC96842DAB5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{960CABC6-A585-426F-BB65-6CC96842DAB5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{960CABC6-A585-426F-BB65-6CC96842DAB5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

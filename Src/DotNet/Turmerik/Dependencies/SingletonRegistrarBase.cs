@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace UrlPlus.AvaloniaApplication
+namespace Turmerik.Dependencies
 {
     public abstract class SingletonRegistrarBase<TData, TInputData>
     {
@@ -29,13 +29,13 @@ namespace UrlPlus.AvaloniaApplication
                         }
                         else
                         {
-                            return this.data;
+                            return data;
                         }
                     }
                 }
                 else
                 {
-                    return this.data;
+                    return data;
                 }
             }
         }
@@ -56,13 +56,13 @@ namespace UrlPlus.AvaloniaApplication
                     }
                     else
                     {
-                        this.data = Convert(inputData);
+                        data = Convert(inputData);
                         registered = 1;
                     }
                 }
             }
 
-            return this.data;
+            return data;
         }
 
         protected abstract TData Convert(TInputData inputData);

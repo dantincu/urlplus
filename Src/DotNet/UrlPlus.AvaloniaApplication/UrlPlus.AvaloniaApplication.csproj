@@ -26,6 +26,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\BoilerplateCode\BoilerplateCode.csproj" />
+    <ProjectReference Include="..\Turmerik\Turmerik.csproj" />
   </ItemGroup>
 </Project>

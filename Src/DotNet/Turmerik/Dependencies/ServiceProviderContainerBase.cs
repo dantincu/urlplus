@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace UrlPlus.AvaloniaApplication
+namespace Turmerik.Dependencies
 {
     public abstract class ServiceProviderContainerBase : SingletonRegistrarBase<IServiceProvider, IServiceCollection>
     {
