@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Turmerik.Helpers;
 
 namespace Turmerik.Text
 {
@@ -87,6 +89,26 @@ namespace Turmerik.Text
             }
 
             return retStr;
+        }
+
+        public static Tuple<string, ReadOnlyCollection<char>> ToRdnlStr(this char[] charsArr, int startIndex = -1, int length = -1)
+        {
+            Tuple<string, ReadOnlyCollection<char>> retTuple;
+
+            if (startIndex >= 0 && length >= 0)
+            {
+                retTuple = Tuple.Create(
+                    new string(charsArr, startIndex, length),
+                    charsArr.Skip(startIndex).Take(length).RdnlC());
+            }
+            else
+            {
+                retTuple = Tuple.Create(
+                    new string(charsArr),
+                    charsArr.RdnlC());
+            }
+
+            return retTuple;
         }
     }
 }

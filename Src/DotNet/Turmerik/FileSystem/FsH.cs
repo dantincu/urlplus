@@ -6,45 +6,12 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Turmerik.Text;
 
-namespace Turmerik.Text
+namespace Turmerik.FileSystem
 {
     public static class FsH
     {
-        public const string FILE_URI_SCHEME = "file://";
-
-        public static readonly string InvalidFileNameChars = Path.GetInvalidFileNameChars().ToStr();
-        public static readonly string InvalidPathChars = Path.GetInvalidPathChars().ToStr();
-
-        public static readonly ReadOnlyCollection<string> CommonTextFileExtensions = new string[]
-        {
-            ".txt", ".md", ".c", ".cpp", ".cs", ".java", ".xml", ".html", ".css", ".js", ".ts", ".json", ".scss", ".less", ".jsx", ".tsx"
-        }.RdnlC();
-
-        public static readonly ReadOnlyCollection<string> CommonImageFileExtensions = new string[]
-        {
-            ".jpg", ".jpeg", ".gif", ".png", ".bmp", ".ico"
-        }.RdnlC();
-
-        public static readonly ReadOnlyCollection<string> CommonVideoFileExtensions = new string[]
-        {
-            ".avi", ".mpeg", ".mpg", ".mp4", ".m4a", ".ogg"
-        }.RdnlC();
-
-        public static readonly ReadOnlyCollection<string> CommonAudioFileExtensions = new string[]
-        {
-            ".mp3", ".flac", ".aac", ".wav"
-        }.RdnlC();
-
-        public static readonly string ParentDir = string.Concat(
-            "..", Path.DirectorySeparatorChar);
-
-        public static bool IsWinDrive(string path)
-        {
-            bool isWinDrive = path.LastOrDefault() == ':';
-            return isWinDrive;
-        }
-
         public static void CopyDirectory(string sourceDir, string destinationDir)
         {
             // Get information about the source directory
@@ -147,45 +114,6 @@ namespace Turmerik.Text
                     }
                 }
             }
-        }
-
-        public static string NormalizePath(string path)
-        {
-            var uri = new Uri(path);
-            var localPath = uri.LocalPath;
-
-            path = Path.GetFullPath(localPath);
-
-            path = path.TrimEnd(
-                Path.DirectorySeparatorChar,
-                Path.AltDirectorySeparatorChar);
-
-            return path;
-        }
-
-        public static string CombinePaths(
-            string[] pathParts,
-            string dirSep)
-        {
-            pathParts = pathParts.Select(
-                part => part?.Trim().Trim('/', '\\')).ToArray();
-
-            pathParts = pathParts.Where(
-                part => !string.IsNullOrWhiteSpace(part)).ToArray();
-
-            string retPath = null;
-
-            if (pathParts.Any())
-            {
-                retPath = string.Join(dirSep, pathParts);
-            }
-
-            if (retPath?.EndsWith(":") ?? false)
-            {
-                retPath += dirSep;
-            }
-
-            return retPath;
         }
     }
 }

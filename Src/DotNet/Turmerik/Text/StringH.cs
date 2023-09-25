@@ -66,18 +66,25 @@ namespace Turmerik.Text
             Func<int, string> strFactory,
             string joinStr = null)
         {
-            string[] strArr = Enumerable.Range(0, rangeCount).Select(
-                idx => strFactory(idx)).ToArray();
-
             string retStr;
 
-            if (joinStr != null)
+            if (rangeCount > 0)
             {
-                retStr = string.Join(joinStr, strArr);
+                string[] strArr = Enumerable.Range(0, rangeCount).Select(
+                idx => strFactory(idx)).ToArray();
+
+                if (joinStr != null)
+                {
+                    retStr = string.Join(joinStr, strArr);
+                }
+                else
+                {
+                    retStr = string.Concat(strArr);
+                }
             }
             else
             {
-                retStr = string.Concat(strArr);
+                retStr = string.Empty;
             }
 
             return retStr;
@@ -120,10 +127,13 @@ namespace Turmerik.Text
         public static string JoinNotNullStr(
             this string joinStr,
             string[] strArr,
-            bool excludeAllWhitespaces = true)
+            bool? excludeAllWhitespaces = true)
         {
-            strArr = strArr.Where(str => str.Nullify(
-                excludeAllWhitespaces) != null).ToArray();
+            if (excludeAllWhitespaces != false)
+            {
+                strArr = strArr.Where(str => str.Nullify(
+                    excludeAllWhitespaces.HasValue) != null).ToArray();
+            }
 
             string retStr = string.Empty;
 

@@ -60,18 +60,44 @@ namespace Turmerik
             return condition;
         }
 
-        public static async Task<bool> ActIfSync(
-            this Task<bool> conditionTask,
-            Action ifTrueAction = null,
-            Action ifFalseAction = null)
+        public static TOut IfNotNull<TIn, TOut>(
+            this TIn inVal,
+            Func<TIn, TOut> convertor,
+            Func<TOut> defaultValueFactory = null)
         {
-            var condition = await conditionTask;
+            TOut outVal;
 
-            condition.ActIf(
-                ifTrueAction,
-                ifFalseAction);
+            if (inVal != null)
+            {
+                outVal = convertor(inVal);
+            }
+            else if (defaultValueFactory != null)
+            {
+                outVal = defaultValueFactory();
+            }
+            else
+            {
+                outVal = default;
+            }
 
-            return condition;
+            return outVal;
+        }
+
+        public static TVal ActIfNotNull<TVal>(
+            this TVal inVal,
+            Action<TVal> callback,
+            Action nullCallback = null)
+        {
+            if (inVal != null)
+            {
+                callback(inVal);
+            }
+            else if (nullCallback != null)
+            {
+                nullCallback();
+            }
+
+            return inVal;
         }
     }
 }

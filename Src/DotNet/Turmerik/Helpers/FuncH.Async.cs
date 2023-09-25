@@ -116,5 +116,88 @@ namespace Turmerik
 
             return condition;
         }
+
+        public static async Task<TOut> IfNotNullAsync<TIn, TOut>(
+            this TIn inVal,
+            Func<TIn, Task<TOut>> convertor,
+            Func<Task<TOut>> defaultValueFactory = null)
+        {
+            TOut outVal;
+
+            if (inVal != null)
+            {
+                outVal = await convertor(inVal);
+            }
+            else if (defaultValueFactory != null)
+            {
+                outVal = await defaultValueFactory();
+            }
+            else
+            {
+                outVal = default;
+            }
+
+            return outVal;
+        }
+
+        public static async Task<TOut> IfNotNullAsync<TIn, TOut>(
+            this Task<TIn> task,
+            Func<TIn, Task<TOut>> convertor,
+            Func<Task<TOut>> defaultValueFactory = null)
+        {
+            var inVal = await task;
+            TOut outVal;
+
+            if (inVal != null)
+            {
+                outVal = await convertor(inVal);
+            }
+            else if (defaultValueFactory != null)
+            {
+                outVal = await defaultValueFactory();
+            }
+            else
+            {
+                outVal = default;
+            }
+
+            return outVal;
+        }
+
+        public static async Task<TVal> ActIfNotNullAsync<TVal>(
+            this TVal inVal,
+            Func<TVal, Task> callback,
+            Func<Task> nullCallback = null)
+        {
+            if (inVal != null)
+            {
+                await callback(inVal);
+            }
+            else if (nullCallback != null)
+            {
+                await nullCallback();
+            }
+
+            return inVal;
+        }
+
+        public static async Task<TVal> ActIfNotNullAsync<TVal>(
+            this Task<TVal> task,
+            Func<TVal, Task> callback,
+            Func<Task> nullCallback = null)
+        {
+            var inVal = await task;
+
+            if (inVal != null)
+            {
+                await callback(inVal);
+            }
+            else if (nullCallback != null)
+            {
+                await nullCallback();
+            }
+
+            return inVal;
+        }
     }
 }

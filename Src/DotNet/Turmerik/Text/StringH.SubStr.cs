@@ -9,7 +9,7 @@ namespace Turmerik.Text
 {
     public static partial class StringH
     {
-        public static Tuple<string, string> SubStr(
+        public static Tuple<string, string> SplitStr(
             this string inputStr,
             IdxRetriever<char, string> splitter)
         {
